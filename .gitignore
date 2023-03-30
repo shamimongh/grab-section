@@ -1,0 +1,11 @@
+# Compiled Python files
+*.pyc
+
+# SQLite database file
+db.sqlite3
+
+# Virtual environment
+venv/
+
+# Log files
+*.log
