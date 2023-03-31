@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+{% block content %}
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <h1>Student Detail</h1>
+        <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+        <p><strong>Student Name:</strong> {{ student.student_name }}</p>
+        <p><strong>Student Password:</strong> {{ student.student_password }}</p>
+      </div>
+
+      <div class="col">
+        <h2>Wish list</h2>
+        <table class="table table-primary">
+          <thead>
+            <tr>
+              <th scope="col">SL</th>
+              <th scope="col">Course</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for course in comCourses %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ course.course_id.course_name}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <h2>Completed Course</h2>
+        <table class="table table-success">
+          <thead>
+            <tr>
+              <th scope="col">SL</th>
+              <th scope="col">Course</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for course in comCourses %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ course.course_id.course_name}}</td>
+                <td>Add to wishlist</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <h2>Incompleted Course</h2>
+        <table class="table table-danger">
+          <thead>
+            <tr>
+              <th scope="col">SL</th>
+              <th scope="col">Course</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for course in incomCourses %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ course.course_id.course_name}}</td>
+                <td>Add to wishlist</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
