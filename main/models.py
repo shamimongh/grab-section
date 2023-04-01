@@ -9,7 +9,7 @@ class Student(models.Model):
   def __str__(self):
     return self.student_name
   
-  class Mentor(models.Model):
+class Mentor(models.Model):
   mentor_id = models.IntegerField()
   mentor_name = models.CharField(max_length=50)
 
@@ -27,8 +27,16 @@ class StudentCourse(models.Model):
   student = models.ForeignKey(Student, on_delete=models.CASCADE)
   course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
+
   def __str__(self):
     return self.student.student_name + " " + self.course.course_name
+  
+class StudentMentor(models.Model):
+  student = models.ForeignKey(Student, on_delete=models.CASCADE)
+  mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+
+  def __str__(self):
+    return self.student.student_name + " " + self.mentor.mentor_name
 
 class SectionSelection(models.Model):
   student = models.ForeignKey(Student, on_delete=models.CASCADE)
