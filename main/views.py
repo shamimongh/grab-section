@@ -38,14 +38,20 @@ def section_request(request):
 
     print(student, course)
 
-    SectionSelection(
-      student_id = student,
-      course_id = course,
-      section = "A",
-      message = ""
-    ).save()
+    isExist = SectionSelection.objects.filter(student_id=student, course_id=course).exists()
 
-    return HttpResponse(request.POST)
+    if isExist:
+      data = SectionSelection.objects.filter(student_id=student, course_id=course)
+      data.delete()
+    else:
+      SectionSelection(
+        student_id = student,
+        course_id = course,
+        section = "A",
+        message = ""
+      ).save()
+
+      return HttpResponse(request.POST)
   else:
     return HttpResponse("Ah!")
 
