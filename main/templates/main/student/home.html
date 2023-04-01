@@ -47,19 +47,17 @@
 
           <div class="col-md-6">
             <h6>Requested Section</h6>
-            <table class="table">
+            <table id="reqTable">
               <thead>
                 <tr>
                   <th scope="col">SL</th>
                   <th scope="col">Course ID</th>
-                  <th scope="col">Course Name</th>
                   <th scope="col">Section</th>
                   <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -88,8 +86,6 @@
           var student_name = '{{ student.student_name }}';
           var section = 'A';
           var status = 'Pending';
-          
-          console.log(course_id, course_name, student_id, student_name, section, status)
 
           $.ajax({
             url: "/ajax/sec_req",
@@ -106,5 +102,39 @@
           })
         })
       })
+
+     $(document).ready(function(){
+       setInterval(function(){
+         $.ajax({
+           url: "/ajax/requested_section",
+           type: "POST",
+           data: {
+             'student_id': {{ student.id }},
+             'csrfmiddlewaretoken': '{{ csrf_token }}'
+           },
+           success: function(response){
+            console.log(response);
+
+            var markup = "";
+            $('#reqTable tbody').empty();
+            for(var i=0; i<response.length; i++){
+              markup += "<tr><td>"+response[i].id+"</td><td>"+response[i].course_id+"</td><td>"+response[i].section+"</td><td>"+response[i].status+"</td></tr>";
+            }
+            $('#reqTable tbody').append(markup);
+
+
+           }
+         })
+       }, 500)
+     })
+     
+     // start the cycle
+
+
+      {% comment %} $(document).ready(function(){
+        $('.addBtn').click(function(){
+          $(this).parent().parent().remove();
+        })
+      }) {% endcomment %}
     </script>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Student, SectionSelection
 
 # Create your views here.
@@ -46,5 +46,17 @@ def section_request(request):
     ).save()
 
     return HttpResponse(request.POST)
+  else:
+    return HttpResponse("Ah!")
+
+def requested_section(request):
+  if request.method == 'POST':
+    student_id = request.POST.get('student_id')
+
+    data = SectionSelection.objects.filter(student_id=student_id).values()
+    print(data)
+
+    return JsonResponse(list(data), safe=False)
+
   else:
     return HttpResponse("Ah!")
