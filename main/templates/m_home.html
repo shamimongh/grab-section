@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% block content %}
+{% load static %}
     <div class="container">
         <div class="row py-4">
             <div class="col-md-12">
@@ -7,9 +8,9 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-6 ">
-                        <img class="border rounded-circle" style="width:250px; height:250px;"} src="https://i.imgur.com/QiGPpDOl.png" alt="Profile Image" class="img-fluid">
+                        <img class="border rounded-circle" style="width:250px; height:250px;" src="https://i.imgur.com/QiGPpDOl.png" alt="Profile Image" class="img-fluid">
                     </div>
-                    <div class=mentor.mentor_name  }}
+                    <div class=mentor.mentor_name>
                     <h3>{{ mentor.mentor_name  }}</h3>
                         <p>{{ mentor.id }}</p>
                         <p><a href="">Update Profile</a></p>
@@ -26,14 +27,26 @@
               <thead>
                 <tr>
                   <th scope="col">SL</th>
-                  <th scope="col">Course ID</th>
-                  <th scope="col">Section</th>
-                  <th scope="col">Status</th>
+                  <th scope="col">Student ID</th>
+                  <th scope="col">Student Name</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
+
               <tbody>
+                {% for i in sectionSelection %}
+                
                 <tr>
+                  <td scope="col">{{ forloop.index }}</td>
+                  <td scope="col">{{ i.student.student_id }}</td>
+                  <td scope="col">{{ i.student.student_name }}</td>
+                  <td scope="col">
+                    <a href="/req-sec-details/"{{ i.student.student_id }}">See details</a>
+                    
+                  </td>
                 </tr>
+
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -41,74 +54,5 @@
        
     </div>
 
-    <script>
-        const btn = document.querySelectorAll('.addBtn');
-        btn.forEach((btn) => {
-          btn.addEventListener('click', (e) => {
-            console.log(e.target.parentElement.parentElement.children[1].innerText);
-          })
-        })
-  
-        $(document).ready(function(){
-          $('.addBtn').click(function(){
-            var course_id = $(this).parent().parent().children()[1].innerText;
-            var course_name = $(this).parent().parent().children()[2].innerText;
-            var student_id = {{ student.id }};
-            var student_name = '{{ student.student_name }}';
-            var section = 'A';
-            var status = 'Pending';
-  
-            $.ajax({
-              url: "/ajax/sec_req",
-              type: "POST",
-              data: {
-                'course_id': course_id,
-                'student_id': student_id,
-                'section': section,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-              },
-              success: function(response){
-                console.log(response);
-              }
-            })
-          })
-        })
-  
-       $(document).ready(function(){
-         setInterval(function(){
-           $.ajax({
-             url: "/ajax/requested_section",
-             type: "POST",
-             data: {
-               'student_id': {{ student.id }},
-               'csrfmiddlewaretoken': '{{ csrf_token }}'
-             },
-             success: function(response){
-              console.log(response);
-  
-              var markup = "";
-              $('#reqTable tbody').empty();
-              for(var i=0; i<response.length; i++){
-                markup += "<tr><td>"+response[i].id+"</td><td>"+response[i].course_id+"</td><td>"+response[i].section+"</td><td>"+response[i].status+"</td></tr>";
-              }
-              $('#reqTable tbody').append(markup);
-  
-  
-             }
-           })
-         }, 500)
-       })
-       
-       // start the cycle
-  
-  
-        {% comment %} $(document).ready(function(){
-          $('.addBtn').click(function(){
-            $(this).parent().parent().remove();
-          })
-        }) {% endcomment %}
-      </script>
-    
-    
     
 {% endblock %}

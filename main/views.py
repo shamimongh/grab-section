@@ -14,18 +14,6 @@ def studentHome (response):
   return render(response, "main/student/home.html", context)
 
 
-def mentorHome (request):
-  mentor = Mentor.objects.get(id=1)
-  student = Student.objects.get(id=1)
-  courses = student.studentcourse_set.all()
-  
-  context = {
-    "mentor": mentor,
-    "student": student,
-    "courses": courses
-    
-  }
-  return render(request, 'm_home.html', context)
 
 def section_request(request):
   if request.method == 'POST':
@@ -81,5 +69,16 @@ def requested_section(request):
   else:
     return HttpResponse("Ah!")
   
+def mentorHome (request):
+  mentor = Mentor.objects.get(id=1)
+  sectionSelection = SectionSelection.objects.all()
+
+  print(sectionSelection)
+
+  context = {
+    "mentor": mentor,
+    "sectionSelection": sectionSelection,
+  }
+  return render(request, 'm_home.html', context)
 
 
