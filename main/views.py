@@ -79,6 +79,6 @@ def mentorHome (request):
     "mentor": mentor,
     "sectionSelection": sectionSelection,
   }
-  return render(request, 'm_home.html', context)
+  return render(request, 'main/mentor/home.html', context)
 
 
