@@ -12,31 +12,12 @@ def studentHome (response):
     "courses": courses
   }
   return render(response, "main/student/home.html", context)
-
-
-
-def section_request(request):
-  if request.method == 'POST':
-    student = request.POST.get('student_id')
-    course = request.POST.get('course_id')
-
-    print(student, course)
-
-    SectionSelection(
-      student_id = student,
-      course_id = course,
-      section = "A",
-      message = ""
-    ).save()
-
-    return HttpResponse(request.POST)
-  else:
-    return HttpResponse("Ah!")
     
 def section_request(request):
   if request.method == 'POST':
     student = request.POST.get('student_id')
     course = request.POST.get('course_id')
+    section = request.POST.get('section')
 
     print(student, course)
 
@@ -49,7 +30,7 @@ def section_request(request):
       SectionSelection(
         student_id = student,
         course_id = course,
-        section = "A",
+        section = section,
         message = ""
       ).save()
 
