@@ -1,0 +1,110 @@
+{% extends 'main/base.html' %}
+{% block content %}
+{% load static %}
+<div class="container">
+  <div class="row py-4">
+      <div class="col-md-12">
+          <div class="row">
+              <div class="col-md-2 ">
+                <img class="img-thumbnail" width="120px" height="auto" src="{% static 'main/images/uiu.png' %}" alt="UIU Logo">
+              </div>
+              <div class="col-md-6">
+                  <p class="fs-4 lh-1">{{ admin.mentor_name  }}</p>
+                  <p class="fs-6 lh-1">ID: {{ admin.id }}</p>
+                  <p class="fs-6 lh-1">Deparment: Computer Science and Engineering</p>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row py-4">
+    <div class="col-md-12">
+      <p class="fs-5">Entrolled Courses</p>
+      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Student ID</th>
+            <th scope="col">Course ID</th>
+            <th scope="col">Section</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in student_data %}
+          <tr>
+            <td scope="col">{{ forloop.counter }}</td>
+            <td scope="col">{{ i.student_id}}</td>
+            <td scope="col">{{ i.course_id}}</td>
+            <td scope="col">{{ i.section}}</td>
+            <td scope="col">{{ i.status}}</td>
+            <td>
+              <button type="button" class="approveBtn btn btn-primary" > Approve</button>
+              <button type="button" class="declineButtonBtn btn btn-danger" > Decline</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // hanfle approval
+  $(document).ready(function(){
+    $(".approveBtn").click(function(){
+      var student_id = $(this).closest('tr').find('td:eq(1)').text();
+      var course_id = $(this).closest('tr').find('td:eq(2)').text();
+      var section = $(this).closest('tr').find('td:eq(2)').text();
+      var status = $(this).closest('tr').find('td:eq(3)').text();
+      
+      $.ajax({
+        url: "/ajax/handleApproval",
+        type: "POST",
+        data: {
+          'csrfmiddlewaretoken': '{{ csrf_token }}',
+          'student_id': student_id,
+          'section': section,
+          'status': "Approved",
+          'course_id': course_id,
+        },
+        success: function(response){
+          alert("Approved");
+        }
+      });
+
+      var status = $(this).closest('tr').find('td:eq(3)').text("Approved");
+    });
+  });
+
+  // handle decline
+  $(document).ready(function(){
+    $(".declineButtonBtn").click(function(){
+      var student_id = $(this).closest('tr').find('td:eq(1)').text();
+      var course_id = $(this).closest('tr').find('td:eq(2)').text();
+      var section = $(this).closest('tr').find('td:eq(2)').text();
+      var status = $(this).closest('tr').find('td:eq(3)').text();
+      
+      $.ajax({
+        url: "/ajax/handleApproval",
+        type: "POST",
+        data: {
+          'csrfmiddlewaretoken': '{{ csrf_token }}',
+          'student_id': student_id,
+          'section': section,
+          'status': "Declined",
+          'course_id': course_id,
+        },
+        success: function(response){
+          alert("Declined");
+        }
+      });
+
+      var status = $(this).closest('tr').find('td:eq(3)').text("Declined");
+    });
+  });
+
+</script>
+{% endblock %}

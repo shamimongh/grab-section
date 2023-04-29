@@ -31,13 +31,13 @@
         </thead>
         <tbody>
           {% for i in student_data %}
-          <tr>
-            <td scope="col">{{ forloop.counter }}</td>
-            <td scope="col">{{ i.student}}</td>
-            <td scope="col">
-              <a href="/m_home/details/{{ i.student }}">See details</a>
-            </td>
-          </tr>
+            <tr>
+              <td scope="col">{{ forloop.counter }}</td>
+              <td scope="col">{{ i.student}}</td>
+              <td scope="col">
+                <a href="/m_home/details/{{ i.student }}">See details</a>
+              </td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>

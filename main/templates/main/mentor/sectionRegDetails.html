@@ -37,7 +37,6 @@
           {% for course in courses %}
 
             <tr>
-              {{ course.course }}
               <td>{{ forloop.counter }}</td>
               <td>{{ course.course.course_id }}</td>
               <td>{{ course.section }}</td>
@@ -116,7 +115,7 @@
       data: {
         'course_id': course_id,
         'student_id': student_id,
-        'status': "Transfered",
+        'status': "Transferred",
         'csrfmiddlewaretoken': '{{ csrf_token }}'
       },
       success: function(data){

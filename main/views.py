@@ -101,3 +101,16 @@ def handleComment(request):
     return HttpResponse("Success")
   else:
     return HttpResponse("Ah!")
+  
+def adminHome(request):
+  admin = Mentor.objects.get(id=1)
+  # student_data = SectionSelection.objects.order_by().values('student').distinct()
+  student_data = SectionSelection.objects.filter(status="Transferred")
+
+  print(student_data)
+
+  context = {
+    "admin": admin,
+    "student_data": student_data,
+  }
+  return render(request, 'main/admin/home.html', context)
