@@ -42,7 +42,7 @@ class SectionSelection(models.Model):
   student = models.ForeignKey(Student, on_delete=models.CASCADE)
   course = models.ForeignKey(Course, on_delete=models.CASCADE)
   section = models.CharField(max_length=50)
-  status = models.CharField(default="pending", max_length=50)
+  status = models.CharField(default="Pending", max_length=50)
   message = models.CharField(max_length=50)
 
   def __str__(self):

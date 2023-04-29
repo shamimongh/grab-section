@@ -43,7 +43,7 @@ def requested_section(request):
     student_id = request.POST.get('student_id')
 
     data = SectionSelection.objects.filter(student_id=student_id).values()
-    print(data)
+
 
     return JsonResponse(list(data), safe=False)
 
@@ -64,3 +64,40 @@ def mentorHome(request):
   return render(request, 'main/mentor/home.html', context)
 
 
+def requestDetails(request, id):
+  student = Student.objects.get(id=id)
+  courses = SectionSelection.objects.filter(student_id=id)
+
+  context = {
+    "student": student,
+    "courses": courses
+  }
+  return render(request, "main/mentor/sectionRegDetails.html", context=context)
+  
+def handleRequestApproval(request):
+  if request.method == 'POST':
+    student_id = request.POST.get('student_id')
+    course_id = request.POST.get('course_id')
+    status = request.POST.get('status')
+
+    print(student_id, course_id, status)
+
+    data = SectionSelection.objects.filter(student_id=student_id, course_id=course_id).update(status=status)
+
+    return HttpResponse("Success")
+  else:
+    return HttpResponse("Ah!")
+  
+def handleComment(request):
+  if request.method == 'POST':
+    student_id = request.POST.get('student_id')
+    course_id = request.POST.get('course_id')
+    comment = request.POST.get('comment')
+
+    print(student_id, course_id, comment)
+
+    data = SectionSelection.objects.filter(student_id=student_id, course_id=course_id).update(message=comment)
+
+    return HttpResponse("Success")
+  else:
+    return HttpResponse("Ah!")

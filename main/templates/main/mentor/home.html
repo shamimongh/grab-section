@@ -18,7 +18,7 @@
   </div>
 
   <div class="row py-4">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <p class="fs-5">Entrolled Courses</p>
       
       <table class="table table-bordered">
@@ -35,7 +35,7 @@
             <td scope="col">{{ forloop.counter }}</td>
             <td scope="col">{{ i.student}}</td>
             <td scope="col">
-              <a href="/req-sec-details/{{ i.student }}">See details</a>
+              <a href="/m_home/details/{{ i.student }}">See details</a>
             </td>
           </tr>
           {% endfor %}

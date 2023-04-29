@@ -1,0 +1,153 @@
+{% extends 'main/base.html' %}
+{% block content %}
+{% load static %}
+<div class="container">
+  <div class="row py-4">
+      <div class="col-md-12">
+          <div class="row">
+              <div class="col-md-2 ">
+                <img class="img-thumbnail" width="120px" height="auto" src="{% static 'main/images/uiu.png' %}" alt="UIU Logo">
+              </div>
+              <div class="col-md-6">
+                  <p class="fs-4 lh-1">{{ student.student_name  }}</p>
+                  <p class="fs-6 lh-1">ID: {{ student.id }}</p>
+                  <p class="fs-6 lh-1">Deparment: Computer Science and Engineering</p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row py-4">
+    <div class="col-md-12">
+      <p class="fs-5">Entrolled Courses</p>      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course ID</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Section</th>
+            <th scope="col">Status</th>
+            <th scope="col">Comment</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          {% for course in courses %}
+
+            <tr>
+              {{ course.course }}
+              <td>{{ forloop.counter }}</td>
+              <td>{{ course.course.course_id }}</td>
+              <td>{{ course.section }}</td>
+              <td>{{ course.course.course_name }}</td>
+              <td>{{ course.status }}</td>
+              <td>
+                <input value={{course.message}} type="text" class="form-control comment"placeholder="Enter Comment">
+              </td>
+              <td>
+                <button type="button" class="approveBtn btn btn-primary" > Approve</button>
+                <button type="button" class="declineButtonBtn btn btn-danger" > Decline</button>
+                <button type="button" class="transferBtn btn btn-secondary" > Transfer</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<script>
+  // handle approval
+  $('.approveBtn').click(function(){
+    var course_id = $(this).closest('tr').find('td:nth-child(2)').text();
+    var student_id = "{{ student.id }}";
+    var url = "/ajax/handleApproval";
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+        'course_id': course_id,
+        'student_id': student_id,
+        'status': "Approved",
+        'csrfmiddlewaretoken': '{{ csrf_token }}'
+      },
+      success: function(data){
+        alert(data);
+      }
+    });
+
+    var status = $(this).closest('tr').find('td:nth-child(5)');
+    status.text("Approved");
+  });
+
+  // handle decline
+  $('.declineButtonBtn').click(function(){
+    var course_id = $(this).closest('tr').find('td:nth-child(2)').text();
+    var student_id = "{{ student.id }}";
+    var url = "/ajax/handleApproval";
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+        'course_id': course_id,
+        'student_id': student_id,
+        'status': "Declined",
+        'csrfmiddlewaretoken': '{{ csrf_token }}'
+      },
+      success: function(data){
+        alert(data);
+      }
+    });
+
+    var status = $(this).closest('tr').find('td:nth-child(5)');
+    status.text("Declined");
+  });
+
+  //handle transfer
+  $('.transferBtn').click(function(){
+    var course_id = $(this).closest('tr').find('td:nth-child(2)').text();
+    var student_id = "{{ student.id }}";
+    var url = "/ajax/handleApproval";
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+        'course_id': course_id,
+        'student_id': student_id,
+        'status': "Transfered",
+        'csrfmiddlewaretoken': '{{ csrf_token }}'
+      },
+      success: function(data){
+        alert(data);
+      }
+    });
+
+    var status = $(this).closest('tr').find('td:nth-child(5)');
+    status.text("Transfered");
+  });
+
+  // hanfele comment
+  $('.comment').change(function(){
+    var course_id = $(this).closest('tr').find('td:nth-child(2)').text();
+    var student_id = "{{ student.id }}";
+    var comment = $(this).val();
+    var url = "/ajax/handleComment";
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+        'course_id': course_id,
+        'student_id': student_id,
+        'comment': comment,
+        'csrfmiddlewaretoken': '{{ csrf_token }}'
+      },
+      success: function(data){
+        alert(data);
+      }
+    });
+  });
+</script>
+
+{% endblock %}
