@@ -50,15 +50,16 @@ def requested_section(request):
   else:
     return HttpResponse("Ah!")
   
-def mentorHome (request):
+def mentorHome(request):
   mentor = Mentor.objects.get(id=1)
-  sectionSelection = SectionSelection.objects.all()
+  # student_data = SectionSelection.objects.order_by().values('student').distinct()
+  student_data = SectionSelection.objects.all().values('student').distinct()
 
-  print(sectionSelection)
+  print(student_data)
 
   context = {
     "mentor": mentor,
-    "sectionSelection": sectionSelection,
+    "student_data": student_data,
   }
   return render(request, 'main/mentor/home.html', context)
 
