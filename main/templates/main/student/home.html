@@ -65,6 +65,7 @@
               <th scope="col">Course ID</th>
               <th scope="col">Section</th>
               <th scope="col">Status</th>
+              <th scope="col">Comment</th>
             </tr>
           </thead>
           <tbody>
@@ -92,8 +93,6 @@
         var student_name = '{{ student.student_name }}';
         var section = $(this).parent().parent().children()[3].children[0].value;
         var status = 'Pending';
-
-        console.log("section", section)
 
         $.ajax({
           url: "/ajax/sec_req",
@@ -126,7 +125,7 @@
           var markup = "";
           $('#reqTable tbody').empty();
           for(var i=0; i<response.length; i++){
-            markup += "<tr><td>"+response[i].id+"</td><td>"+response[i].course_id+"</td><td>"+response[i].section+"</td><td>"+response[i].status+"</td></tr>";
+            markup += "<tr><td>"+response[i].id+"</td><td>"+response[i].course_id+"</td><td>"+response[i].section+"</td><td>"+response[i].status+"</td><td>"+response[i].message+"</td></tr>";
           }
           $('#reqTable tbody').append(markup);
 

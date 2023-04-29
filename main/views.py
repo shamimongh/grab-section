@@ -43,23 +43,74 @@ def requested_section(request):
     student_id = request.POST.get('student_id')
 
     data = SectionSelection.objects.filter(student_id=student_id).values()
-    print(data)
+
 
     return JsonResponse(list(data), safe=False)
 
   else:
     return HttpResponse("Ah!")
   
-def mentorHome (request):
+def mentorHome(request):
   mentor = Mentor.objects.get(id=1)
-  sectionSelection = SectionSelection.objects.all()
+  # student_data = SectionSelection.objects.order_by().values('student').distinct()
+  student_data = SectionSelection.objects.all().values('student').distinct()
 
-  print(sectionSelection)
+  print(student_data)
 
   context = {
     "mentor": mentor,
-    "sectionSelection": sectionSelection,
+    "student_data": student_data,
   }
   return render(request, 'main/mentor/home.html', context)
 
 
+def requestDetails(request, id):
+  student = Student.objects.get(id=id)
+  courses = SectionSelection.objects.filter(student_id=id)
+
+  context = {
+    "student": student,
+    "courses": courses
+  }
+  return render(request, "main/mentor/sectionRegDetails.html", context=context)
+  
+def handleRequestApproval(request):
+  if request.method == 'POST':
+    student_id = request.POST.get('student_id')
+    course_id = request.POST.get('course_id')
+    status = request.POST.get('status')
+
+    print(student_id, course_id, status)
+
+    data = SectionSelection.objects.filter(student_id=student_id, course_id=course_id).update(status=status)
+
+    return HttpResponse("Success")
+  else:
+    return HttpResponse("Ah!")
+  
+def handleComment(request):
+  if request.method == 'POST':
+    student_id = request.POST.get('student_id')
+    course_id = request.POST.get('course_id')
+    comment = request.POST.get('comment')
+
+    print(student_id, course_id, comment)
+
+    data = SectionSelection.objects.filter(student_id=student_id, course_id=course_id).update(message=comment)
+
+    return HttpResponse("Success")
+  else:
+    return HttpResponse("Ah!")
+  
+def adminHome(request):
+  admin = Mentor.objects.get(id=1)
+  # student_data = SectionSelection.objects.order_by().values('student').distinct()
+  student_data = SectionSelection.objects.filter(status="Transferred")
+
+  print(student_data)
+
+  context = {
+    "admin": admin,
+    "student_data": student_data,
+  }
+  return render(request, 'main/admin/home.html', context)
